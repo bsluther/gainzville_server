@@ -1,5 +1,5 @@
 const express = require("express")
-const { checkJwt } = require("../authz/checkJwt")
+const { checkJwt, decodeJwt } = require("../authz/checkJwt")
 
 const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../dbOps")
 const { findEntities, findEntity } = require("../dbOps2")

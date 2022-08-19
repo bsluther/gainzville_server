@@ -1,25 +1,20 @@
 require("dotenv").config()
 const express = require("express")
-const helmet = require("helmet");
-const { checkJwt, decodeJwt } = require("./authz/checkJwt");
+const helmet = require("helmet")
 const { getActivityTemplate, getAllActivityTemplates, getTypeTemplate, getFacetTemplate, getActivityInstance, getActivityInstances, getUserActivityInstances, findActivityTemplate, setActivityInstance, getUserFacetTemplates, insertActivityInstance, deleteActivityInstance, insertActivityTemplate, setActivityTemplate, deleteActivityTemplate, getUserTypeTemplates, getActivityPair, getUserActivityPairs, insertFacetTemplate } = require("./dbOps")
-const { findEntities, findEntity } = require("./dbOps2")
 const { librariesRouter } = require("./routers/librariesRouter")
-const { activityInstancesRouter } = require("./routers/activityInstancesRouter");
-const { activityTemplatesRouter } = require("./routers/activityTemplatesRouter");
+const { activityInstancesRouter } = require("./routers/activityInstancesRouter")
+const { activityTemplatesRouter } = require("./routers/activityTemplatesRouter")
+const { usersRouter } = require("./routers/usersRouter")
 
 
 const server = express();
 const apiRouter = express.Router()
-// const activityRouter = express.Router()
-
-const usersRouter = express.Router()
 const PORT = process.env.PORT || 7777
 
 server.use(express.json())
 server.use(helmet())
 server.use("/api", apiRouter)
-// apiRouter.use("/activity", activityRouter)
 apiRouter.use("/libraries", librariesRouter)
 apiRouter.use("/users", usersRouter)
 apiRouter.use("/activity/instances", activityInstancesRouter)
@@ -39,6 +34,10 @@ apiRouter.use("/activity/templates", activityTemplatesRouter)
 
 
 
+
+
+
+
 /***** V1 *****/
 
 server.post("/activity/instance", (req, res) => {
@@ -48,14 +47,8 @@ server.post("/activity/instance", (req, res) => {
 })
 
 
-
-usersRouter.get("/:id", checkJwt, (req, res) => {
-  findEntity("user")({ _id: req.params.id })
-  .then(data => res.send(data))
-})
-
-
 /***** AUTH *****/
+
 server.post("/login", (req, res) => {
   res.send({ token: "test123" })
 })
@@ -125,7 +118,6 @@ server.delete("/activity/instance/:id", (req, res) => {
 })
 
 server.post("/activity/instance", (req, res) => {
-  console.log(req.body)
   insertActivityInstance(req.body)
   .then(data => res.send(data))
 })

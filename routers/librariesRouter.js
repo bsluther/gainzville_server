@@ -1,7 +1,7 @@
 const express = require("express")
-const { split, reduce, includes, ifElse, propOr, append } = require("ramda")
+const { split, reduce, includes, ifElse, propOr, append, assoc } = require("ramda")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities } = require("../dbOps2")
+const { findEntity, findEntities, updateEntity } = require("../dbOps2")
 
 const librariesRouter = express.Router()
 
@@ -27,25 +27,53 @@ const isPublic = propOr(false)("isPublic")
 const isAdmin = userId => lib =>
   includes(userId)(lib.admins)
 
+const assignTruthy = (acc, [comparator, obj]) =>
+  comparator
+    ? Object.assign({}, acc, obj)
+    : acc
+
 // this might be overly clever:
 // is the preferable behavior for the request to be rejected with status 401
 // if /any/ part of it is unauthorized?
 // the client may be surprised that some of the requested ids were not returned
 librariesRouter.get("/", decodeJwt, (req, res) => {
-  const ids = csvToArray(req.query.id)
+  const ids = csvToArray(req.query.id ?? "")
   const userId = req.auth.sub
-  
-  findEntities("library")
-              ({ _id: { $in: ids } })
-  .then(libs => 
-    reduce((acc, lib) =>
-              ifElse(lib => isPublic(lib) || isAdmin(userId)(lib))
-                    (lib => append(lib)(acc))
-                    (() => acc)
-                    (lib))
-          ([])
-          (libs)
-  )
+  // Need to firm this up: a request with a bracket in it crashes the server.
+
+  // const queryObject = reduce(assignTruthy)
+  //                           ({})
+  //                           ([
+  //                             [req.query.id, { _id: { $in: ids } }],
+  //                             [req.query.user, { }]
+  //                           ])
+
+  if (Object.keys(req.query).length === 0) {
+    findEntity("user")
+              ({ _id: req.auth.sub })
+    .then(userData =>
+      findEntities("library")
+                  ({ _id: { $in: userData.libraries } })
+    ).then(libs => res.send(libs))
+
+  } else {
+    findEntities("library")
+                ({ _id: { $in: ids } })
+    .then(libs => 
+      reduce((acc, lib) =>
+                ifElse(lib => isPublic(lib) || isAdmin(userId)(lib))
+                      (lib => append(lib)(acc))
+                      (() => acc)
+                      (lib))
+            ([])
+            (libs)
+    )
+    .then(data => res.send(data))
+  }
+})
+
+librariesRouter.put("/:id", checkJwt, (req, res) => {
+  updateEntity("library")(req.body)
   .then(data => res.send(data))
 })
 
