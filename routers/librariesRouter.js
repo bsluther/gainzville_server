@@ -1,7 +1,7 @@
 const express = require("express")
 const { split, reduce, includes, ifElse, propOr, append, assoc } = require("ramda")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities, updateEntity } = require("../dbOps2")
+const { findEntity, findEntities, replaceEntity, insertEntity } = require("../dbOps2")
 
 const librariesRouter = express.Router()
 
@@ -73,7 +73,12 @@ librariesRouter.get("/", decodeJwt, (req, res) => {
 })
 
 librariesRouter.put("/:id", checkJwt, (req, res) => {
-  updateEntity("library")(req.body)
+  replaceEntity("library")(req.body)
+  .then(data => res.send(data))
+})
+
+librariesRouter.post("/", checkJwt, (req, res) => {
+  insertEntity("library")(req.body)
   .then(data => res.send(data))
 })
 

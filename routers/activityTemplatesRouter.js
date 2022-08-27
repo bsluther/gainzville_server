@@ -1,6 +1,6 @@
 const express = require("express")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, insertEntity, updateEntity } = require("../dbOps2")
+const { findEntity, insertEntity, replaceEntity } = require("../dbOps2")
 
 const activityTemplatesRouter = express.Router()
 
@@ -17,7 +17,7 @@ activityTemplatesRouter.post("/", checkJwt, (req, res) => {
 })
 
 activityTemplatesRouter.put("/:id", checkJwt, (req, res) => {
-  updateEntity("activity_template")(req.body)
+  replaceEntity("activity_template")(req.body)
   .then(data => res.send(data))
 })
 

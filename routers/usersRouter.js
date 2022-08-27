@@ -1,7 +1,7 @@
 const express = require("express")
 const { reduce, union } = require("ramda")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities } = require("../dbOps2")
+const { findEntity, findEntities, updateEntity } = require("../dbOps2")
 
 const usersRouter = express.Router()
 
@@ -22,6 +22,11 @@ usersRouter.get("/:id/libraries", checkJwt, (req, res) => {
                 ({ id: { $in: userData.libraries } })
     .then(libs => res.send(libs))
   )
+})
+
+usersRouter.put("/:id", checkJwt, (req, res) => {
+  updateEntity("user")(req.params.id)(req.body)
+  .then(data => res.send(data))
 })
 
 module.exports = { usersRouter }

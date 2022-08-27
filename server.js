@@ -6,6 +6,8 @@ const { librariesRouter } = require("./routers/librariesRouter")
 const { activityInstancesRouter } = require("./routers/activityInstancesRouter")
 const { activityTemplatesRouter } = require("./routers/activityTemplatesRouter")
 const { usersRouter } = require("./routers/usersRouter")
+const { facetTemplatesRouter } = require("./routers/facetTemplatesRouter")
+const typeTemplatesRouter = require("./routers/typeTemplatesRouter")
 
 
 const server = express();
@@ -14,27 +16,16 @@ const PORT = process.env.PORT || 7777
 
 server.use(express.json())
 server.use(helmet())
+
+/***** V2 ******/
+
 server.use("/api", apiRouter)
 apiRouter.use("/libraries", librariesRouter)
 apiRouter.use("/users", usersRouter)
 apiRouter.use("/activity/instances", activityInstancesRouter)
 apiRouter.use("/activity/templates", activityTemplatesRouter)
-
-/***** V2 ******/
-
-// activityRouter.get("/templates/:id", (req, res) => {
-//   findEntity("activity_template")({ _id: req.params.id })
-//   .then(data => {
-//     if (data) res.send(data)
-//     if (!data) res.status(404).send({ message: "Not found" })
-//   })
-// })
-
-
-
-
-
-
+apiRouter.use("/facet/templates", facetTemplatesRouter)
+apiRouter.use("/type/templates", typeTemplatesRouter)
 
 
 

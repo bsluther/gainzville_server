@@ -22,16 +22,27 @@ const insertEntity = collection => newEntity =>
     .collection(collection)
     .insertOne(newEntity))
 
-const updateEntity = collection => updatedEntity =>
+const replaceEntity = collection => entity =>
   main(client =>
     client
     .db("v1")
     .collection(collection)
-    .findOneAndReplace({ _id: updatedEntity._id }, updatedEntity))
+    .findOneAndReplace({ _id: entity._id }, entity))
+
+const updateEntity = collection => id => entries =>
+  main(client =>
+    client
+    .db("v1")
+    .collection(collection)
+    .findOneAndUpdate(
+      { _id: id },
+      entries
+    ))
 
 module.exports = {
   findEntity,
   findEntities,
   insertEntity,
+  replaceEntity,
   updateEntity
 }

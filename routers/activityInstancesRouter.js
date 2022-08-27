@@ -1,8 +1,7 @@
 const express = require("express")
-const { checkJwt, decodeJwt } = require("../authz/checkJwt")
-
+const { checkJwt } = require("../authz/checkJwt")
 const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../dbOps")
-const { findEntities, findEntity } = require("../dbOps2")
+const { findEntities, findEntity, updateEntity } = require("../dbOps2")
 
 const activityInstancesRouter = express.Router()
 
@@ -49,6 +48,17 @@ activityInstancesRouter.delete("/:id", checkJwt, (req, res) => {
         res.status(401).send({ message: "Unauthorized" })
       }
   })
+})
+
+activityInstancesRouter.put("/:id", checkJwt, (req, res) => {
+  if (req.auth.sub === req.body.actor) {
+    updateEntity("activity_instance")
+                (req.params.id)
+                ({ $set: req.body })
+    .then(data => res.send(data))
+  } else {
+    res.status(400).send({ message: "Unauthorized" })
+  }
 })
 
 module.exports = { activityInstancesRouter }
