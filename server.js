@@ -17,6 +17,12 @@ const PORT = process.env.PORT || 7777
 server.use(express.json())
 server.use(helmet())
 
+/***** DEPLOYMENT *****/
+
+server.get("/", (req, res) => {
+  res.send("greetings planet")
+})
+
 /***** V2 ******/
 
 server.use("/api", apiRouter)
