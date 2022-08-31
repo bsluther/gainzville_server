@@ -2,6 +2,7 @@ const express = require("express")
 const { split, reduce, includes, ifElse, propOr, append, assoc } = require("ramda")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
 const { findEntity, findEntities, replaceEntity, insertEntity } = require("../dbOps2")
+const { csvToArray, isPublic, isAdmin } = require("../utility/fns")
 
 const librariesRouter = express.Router()
 
@@ -22,10 +23,7 @@ librariesRouter.get("/:id", decodeJwt, (req, res) => {
 })
 
 
-const csvToArray = split(",")
-const isPublic = propOr(false)("isPublic")
-const isAdmin = userId => lib =>
-  includes(userId)(lib.admins)
+
 
 const assignTruthy = (acc, [comparator, obj]) =>
   comparator

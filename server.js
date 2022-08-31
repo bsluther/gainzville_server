@@ -29,6 +29,10 @@ apiRouter.use("/type/templates", typeTemplatesRouter)
 
 
 
+
+
+
+
 /***** V1 *****/
 
 server.post("/activity/instance", (req, res) => {
@@ -153,30 +157,3 @@ server.post("/facet/template", (req, res) => {
 server.listen(PORT, () => {
   console.log(`Gainzville server running on port ${PORT}...`)
 })
-
-
-
-// const { MongoClient } = require("mongodb");
-
-// const uri = process.env.MONGO_URI;
-// console.log(uri)
-
-// const client = new MongoClient(uri);
-
-// async function run() {
-//   try {
-//     await client.connect();
-
-//     const database = client.db("v1");
-//     const activityTemplates = database.collection("activity_template");
-
-//     const query = { name: "Pull Up"};
-//     const pullUpTemplate = await activityTemplates.findOne(query);
-    
-//     console.log(pullUpTemplate);
-//   } finally {
-//     await client.close();
-//   }
-// }
-
-// run().catch(console.dir);
