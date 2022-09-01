@@ -25,7 +25,12 @@ server.get("/", (req, res) => {
 
 /***** V2 ******/
 
-server.use("/api", apiRouter)
+const logMiddleware = (req) => {
+  console.log(req)
+  return req
+}
+
+server.use("/api", logMiddleware, apiRouter)
 apiRouter.use("/libraries", librariesRouter)
 apiRouter.use("/users", usersRouter)
 apiRouter.use("/activity/instances", activityInstancesRouter)
