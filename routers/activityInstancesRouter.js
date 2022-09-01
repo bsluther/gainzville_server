@@ -1,5 +1,5 @@
 const express = require("express")
-const { checkJwt } = require("../authz/checkJwt")
+const { checkJwt, decodeJwt } = require("../authz/checkJwt")
 const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../dbOps")
 const { findEntities, findEntity, updateEntity } = require("../dbOps2")
 
@@ -17,7 +17,12 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
   })
 })
 
-activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
+const logMiddleware = (req) => {
+  console.log('-----REQ.AUTH-----', req.auth)
+  return req
+}
+
+activityInstancesRouter.get("/actor/:userId", decodeJwt, logMiddleware, checkJwt, (req, res) => {
   console.log('!!!!!!!!!!!!!!!! passed checkJwt!')
   if (req.auth.sub !== req.params.userId) {
     res.status(401).send({ message: "Unauthorized user." })
