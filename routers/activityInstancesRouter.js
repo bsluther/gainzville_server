@@ -18,6 +18,7 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
 })
 
 activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
+  console.log('!!!!!!!!!!!!!!!! passed checkJwt!')
   if (req.auth.sub !== req.params.userId) {
     res.status(401).send({ message: "Unauthorized user." })
   }
