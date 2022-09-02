@@ -5,7 +5,7 @@ const { findEntities, findEntity, updateEntity } = require("../dbOps2")
 
 const activityInstancesRouter = express.Router()
 
-activityInstancesRouter.get('/*', (req, res) => {
+activityInstancesRouter.get('/test', (req, res) => {
   res.status(501).send({message: 'FAILURE!!'})
 })
 
