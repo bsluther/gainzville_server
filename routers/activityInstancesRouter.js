@@ -23,7 +23,7 @@ const logMiddleware = (req) => {
   return req
 }
 
-activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
+activityInstancesRouter.get("/actor/:userId", decodeJwt, (req, res) => {
   console.log('!!!!!!!!!!!!!!!! passed checkJwt!')
   if (req.auth.sub !== req.params.userId) {
     res.status(401).send({ message: "Unauthorized user." })
