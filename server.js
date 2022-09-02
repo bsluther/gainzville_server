@@ -25,8 +25,13 @@ server.get("/", (req, res) => {
 
 /***** V2 ******/
 
+const testRouter = express.Router()
+testRouter.get('/*', (req, res) => {
+  res.status(501).send({ message: "FAILURE!"})
+})
 
-server.use("/api", apiRouter)
+
+server.use("/api", testRouter)
 apiRouter.use("/libraries", librariesRouter)
 apiRouter.use("/users", usersRouter)
 apiRouter.use("/activity/instances", activityInstancesRouter)
