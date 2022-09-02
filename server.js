@@ -31,7 +31,7 @@ testRouter.get('/*', (req, res) => {
 })
 
 
-server.use("/api", testRouter)
+server.use("/api", apiRouter)
 apiRouter.use("/libraries", librariesRouter)
 apiRouter.use("/users", usersRouter)
 apiRouter.use("/activity/instances", activityInstancesRouter)

@@ -5,6 +5,10 @@ const { findEntities, findEntity, updateEntity } = require("../dbOps2")
 
 const activityInstancesRouter = express.Router()
 
+activityInstancesRouter.get('/*', (req, res) => {
+  res.status(501).send({message: 'FAILURE!!'})
+})
+
 activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
   findEntity("activity_instance")({ _id: req.params.id })
   .then(data => {
@@ -26,7 +30,7 @@ const logMiddleware = (req) => {
 activityInstancesRouter.get("/actor/:userId", decodeJwt, (req, res) => {
 
   res.status(501).send({ message: `TEST ERROR ------- TEST ERROR -------- TEST ERROR` })
-  
+
   if (req.auth.sub !== req.params.userId) {
     res.status(401).send({ message: "Unauthorized user." })
   }
