@@ -27,7 +27,7 @@ server.get("/", (req, res) => {
 
 const testRouter = express.Router()
 testRouter.get('/*', (req, res) => {
-  res.status(501).send({ message: "FAILURE!"})
+  res.status(501).send({ message: "FAILURE!" })
 })
 
 
