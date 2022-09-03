@@ -20,7 +20,7 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
     }
   })
 })
-console.log('changes...')
+
 const logMiddleware = (req) => {
   console.log('-----REQ.AUTH-----', req.auth)
   throw new Error({ message: req.auth.sub, auth: req.auth })
