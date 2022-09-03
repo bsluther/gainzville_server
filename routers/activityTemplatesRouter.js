@@ -1,8 +1,23 @@
 const express = require("express")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, insertEntity, replaceEntity } = require("../dbOps2")
+const { findEntity, insertEntity, replaceEntity, findEntities } = require("../dbOps2")
 
 const activityTemplatesRouter = express.Router()
+
+activityTemplatesRouter.get("/", checkJwt, (req, res) => {
+  const searchParams = new URLSearchParams(req.params)
+  const nameParam = searchParams.get("name")
+  const nameRegex = new RegExp(`${nameParam}`, "ig")
+
+  findEntities('activity_template')
+              ({
+                $or: [
+                  { name: { $regex: nameRegex } },
+                  { aliases: { $regex: nameRegex }}
+                ]
+              })
+  .then(data => res.send(data))
+})
 
 activityTemplatesRouter.get("/:id", (req, res) => {
   findEntity("activity_template")({ _id: req.params.id })

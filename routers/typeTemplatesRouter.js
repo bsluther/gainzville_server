@@ -10,15 +10,15 @@ typeTemplatesRouter.get("/", checkJwt, (req, res) => {
   const searchParams = new URLSearchParams(req.query)
   
   const queryObj = ifElse(params => params.has("ids"))
-  (params => ({
-    id: { $in: params.get("ids").split(".") }
-  }))
-  (() => ({}))
-  (searchParams)
+                         (params => ({
+                           id: { $in: params.get("ids").split(".") }
+                         }))
+                         (() => ({}))
+                         (searchParams)
   
   findEntities("type_template")
-  (queryObj)
-  .then(data => res.send(data))
+              (queryObj)
+              .then(data => res.send(data))
 })
 
 typeTemplatesRouter.get("/:id", checkJwt, (req, res) => {
