@@ -1,12 +1,23 @@
 const express = require("express")
 const { reduce, union } = require("ramda")
-const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities, updateEntity } = require("../dbOps2")
+const { checkJwt, decodeJwt } = require("../authz/checkJwt")
+const { findEntity, findEntities, updateEntity, insertEntity } = require("../dbOps2")
 
 const usersRouter = express.Router()
 
 usersRouter.get("/:id", checkJwt, (req, res) => {
   findEntity("user")({ _id: req.params.id })
+  .then(data => res.send(data))
+})
+
+usersRouter.post("/", decodeJwt, (req, res) => {
+  insertEntity("user")
+              (req.body)
+  .then(data => {
+    console.log("DATA: ", data)
+    console.log("BODY: ", req.body)
+    return data
+  })
   .then(data => res.send(data))
 })
 
