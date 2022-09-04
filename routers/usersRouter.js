@@ -11,7 +11,7 @@ usersRouter.get("/:id", checkJwt, (req, res) => {
 })
 
 usersRouter.post("/", decodeJwt, (req, res) => {
-  console.log("AUTH:", req.auth)
+  console.log("AUTH:", req.headers.authorization)
   insertEntity("user")
               (req.body)
   .then(data => {
