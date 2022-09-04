@@ -4,8 +4,8 @@ const { findEntity, insertEntity, replaceEntity, findEntities } = require("../db
 
 const activityTemplatesRouter = express.Router()
 
-activityTemplatesRouter.get("/", checkJwt, (req, res) => {
-  const searchParams = new URLSearchParams(req.params)
+activityTemplatesRouter.get("/", (req, res) => {
+  const searchParams = new URLSearchParams(req.query)
   const nameParam = searchParams.get("name")
   const nameRegex = new RegExp(`${nameParam}`, "ig")
 
