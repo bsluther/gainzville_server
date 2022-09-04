@@ -12,14 +12,20 @@ usersRouter.get("/:id", checkJwt, (req, res) => {
 
 usersRouter.post("/", decodeJwt, (req, res) => {
   console.log("AUTH:", req.headers.authorization)
-  insertEntity("user")
-              (req.body)
-  .then(data => {
-    console.log("DATA: ", data)
-    console.log("BODY: ", req.body)
-    return data
-  })
-  .then(data => res.send(data))
+  if (req.auth === process.env.AUTH0_POST_REGISTRATION_SECRET) {
+    insertEntity("user")
+                (req.body)
+    .then(data => {
+      console.log("DATA: ", data)
+      console.log("BODY: ", req.body)
+      return data
+    })
+    .then(data => res.send(data))
+  }
+
+  else {
+    res.status(401).send()
+  }
 })
 
 const collectAllElements = libs =>
