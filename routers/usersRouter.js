@@ -10,10 +10,10 @@ usersRouter.get("/:id", checkJwt, (req, res) => {
   .then(data => res.send(data))
 })
 
-usersRouter.post("/", decodeJwt, (req, res) => {
+usersRouter.post("/", (req, res) => {
   const authString = req.headers.authorization ?? ""
   const secret = authString.slice(6)
-  console.log('..', authString, secret)
+  console.log('Secrets: ', authString, secret)
   if (secret === process.env.AUTH0_POST_REGISTRATION_SECRET) {
     insertEntity("user")
                 (req.body)
