@@ -1,7 +1,7 @@
 const express = require("express")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
-const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../dbOps")
-const { findEntities, findEntity, updateEntity } = require("../dbOps2")
+const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../database/dbOps")
+const { findEntities, findEntity, updateEntity } = require("../database/dbOps")
 
 const activityInstancesRouter = express.Router()
 

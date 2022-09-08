@@ -1,4 +1,4 @@
-const { main } = require("./dbOps")
+const { main } = require("./mongoConnection")
 
 const findEntity = collection => queryObj =>
   main(client =>

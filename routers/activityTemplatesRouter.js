@@ -1,6 +1,6 @@
 const express = require("express")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, insertEntity, replaceEntity, findEntities } = require("../dbOps2")
+const { findEntity, insertEntity, replaceEntity, findEntities } = require("../database/dbOps")
 
 const activityTemplatesRouter = express.Router()
 

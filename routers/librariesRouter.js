@@ -1,7 +1,7 @@
 const express = require("express")
 const { split, reduce, includes, ifElse, propOr, append, assoc } = require("ramda")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities, replaceEntity, insertEntity } = require("../dbOps2")
+const { findEntity, findEntities, replaceEntity, insertEntity } = require("../database/dbOps")
 const { csvToArray, isPublic, isAdmin } = require("../utility/fns")
 
 const librariesRouter = express.Router()

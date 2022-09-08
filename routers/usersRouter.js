@@ -1,6 +1,6 @@
 const express = require("express")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntity, findEntities, updateEntity, insertEntity } = require("../dbOps2")
+const { findEntity, findEntities, updateEntity, insertEntity } = require("../database/dbOps")
 
 const usersRouter = express.Router()
 

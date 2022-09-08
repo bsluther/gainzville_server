@@ -1,6 +1,6 @@
 const express = require("express")
 const { checkJwt } = require("../authz/checkJwt")
-const { findEntities, findEntity, insertEntity } = require("../dbOps2")
+const { findEntities, findEntity, insertEntity } = require("../database/dbOps")
 
 const facetTemplatesRouter = express.Router()
 
