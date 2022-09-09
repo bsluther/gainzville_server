@@ -39,10 +39,20 @@ const updateEntity = collection => id => entries =>
       entries
     ))
 
+const deleteEntity = collection => queryObj =>
+  main(client =>
+    client
+    .db("v1")
+    .collection(collection)
+    .deleteOne(queryObj))
+
+    
+
 module.exports = {
   findEntity,
   findEntities,
   insertEntity,
   replaceEntity,
-  updateEntity
+  updateEntity,
+  deleteEntity
 }

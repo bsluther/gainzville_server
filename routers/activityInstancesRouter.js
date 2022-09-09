@@ -1,13 +1,9 @@
 const express = require("express")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
 const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../database/dbOps")
-const { findEntities, findEntity, updateEntity } = require("../database/dbOps")
+const { findEntities, findEntity, updateEntity, insertEntity, deleteEntity } = require("../database/dbOps")
 
 const activityInstancesRouter = express.Router()
-
-activityInstancesRouter.get('/test', (req, res) => {
-  res.status(501).send({message: 'FAILURE!!'})
-})
 
 activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
   findEntity("activity_instance")({ _id: req.params.id })
@@ -35,7 +31,7 @@ activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
 
 activityInstancesRouter.post("/", checkJwt, (req, res) => {
   if (req.auth.sub === req.body.actor) {
-    insertActivityInstance(req.body)
+    insertEntity("activity_instance")(req.body)
     .then(data => res.send(data))
   } else {
     res.status(401).send({ message: "Unauthorized" })
@@ -43,11 +39,11 @@ activityInstancesRouter.post("/", checkJwt, (req, res) => {
 })
 
 activityInstancesRouter.delete("/:id", checkJwt, (req, res) => {
-  getActivityInstance(req.params.id)
+  findEntity("activity_instance")({ _id: req.params.id })
   .then(instance => {
       if (!instance) res.status(404).send({ message: "Delete failed: no instance found with that id" })
       else if (instance?.actor === req.auth.sub) {
-        deleteActivityInstance(req.params.id)
+        deleteEntity("activity_instance")({ _id: req.params.id })
         .then(data => res.send(data))
       } else {
         res.status(401).send({ message: "Unauthorized" })
