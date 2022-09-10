@@ -17,6 +17,11 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
   })
 })
 
+activityInstancesRouter.get("/", checkJwt, (req, res) => {
+  findEntities("activity_instance")(req.query)
+  .then(data => res.send(data))
+})
+
 activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
 
   if (req.auth.sub !== req.params.userId) {
