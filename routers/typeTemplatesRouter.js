@@ -11,7 +11,7 @@ typeTemplatesRouter.get("/", checkJwt, (req, res) => {
   
   const queryObj = ifElse(params => params.has("ids"))
                          (params => ({
-                           id: { $in: params.get("ids").split(".") }
+                           id: { $in: params.get("ids").split(",") }
                          }))
                          (() => ({}))
                          (searchParams)
