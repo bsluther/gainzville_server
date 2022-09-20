@@ -1,20 +1,17 @@
 const express = require("express")
-const { ifElse } = require("ramda")
+const { pipe } = require("ramda")
 const { checkJwt } = require("../authz/checkJwt")
 const { findEntities, findEntity, insertEntity } = require("../database/dbOps")
+const { nameQuery, transformQuery, idsQuery } = require("../utility/fns")
 
 const facetTemplatesRouter = express.Router()
 
 facetTemplatesRouter.get("/", checkJwt, (req, res) => {
-  const searchParams = new URLSearchParams(req.query)
+  const queryObj = pipe(
+    transformQuery(idsQuery)("ids"),
+    transformQuery(nameQuery)("name")
+  )(req.query)
   
-  const queryObj = ifElse(params => params.has("ids"))
-                         (params => ({
-                           id: { $in: params.get("ids").split(",") }
-                         }))
-                         (() => ({}))
-                         (searchParams)
-
   findEntities("facet_template")(queryObj)
   .then(data => res.send(data))
 })
