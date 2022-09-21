@@ -1,7 +1,10 @@
 const express = require("express")
+const { dissoc } = require("ramda")
 const { checkJwt, decodeJwt } = require("../authz/checkJwt")
 const { deleteActivityInstance, getActivityInstance, insertActivityInstance } = require("../database/dbOps")
 const { findEntities, findEntity, updateEntity, insertEntity, deleteEntity } = require("../database/dbOps")
+const { main } = require("../database/mongoConnection")
+const { transformQuery, idsQuery } = require("../utility/fns")
 
 const activityInstancesRouter = express.Router()
 
@@ -18,8 +21,20 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
 })
 
 activityInstancesRouter.get("/", checkJwt, (req, res) => {
-  findEntities("activity_instance")(req.query)
-  .then(data => res.send(data))
+  if (req.query.hasOwnProperty('limit')) {
+    main(client =>
+      client
+      .db("v1")
+      .collection("activity_instance")
+      .find(dissoc('limit')(req.query))
+      .limit(parseInt(req.query.limit))
+      .toArray())
+    .then(data => res.send(data))
+  } else {
+    findEntities("activity_instance")(req.query)
+    .then(data => res.send(data))
+  }
+
 })
 
 activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
