@@ -21,20 +21,8 @@ activityInstancesRouter.get("/:id", checkJwt, (req, res) => {
 })
 
 activityInstancesRouter.get("/", checkJwt, (req, res) => {
-  if (req.query.hasOwnProperty('limit')) {
-    main(client =>
-      client
-      .db("v1")
-      .collection("activity_instance")
-      .find(dissoc('limit')(req.query))
-      .limit(parseInt(req.query.limit))
-      .toArray())
-    .then(data => res.send(data))
-  } else {
-    findEntities("activity_instance")(req.query)
-    .then(data => res.send(data))
-  }
-
+  findEntities("activity_instance")(req.query)
+  .then(data => res.send(data))
 })
 
 activityInstancesRouter.get("/actor/:userId", checkJwt, (req, res) => {
