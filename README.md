@@ -1,1 +1,1 @@
-A Node backend for the (Gainzville web app)[http://github.com/bsluther/gainzville].
+A Node backend for the [[http://github.com/bsluther/gainzville|Gainzville web app]].
